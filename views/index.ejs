@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <% include ./partials/head %>
+</head>
+<body class="container">
+
+<header class="main-header">
+    <% include ./partials/header %>
+</header>
+<section class="container middle-container">
+    <div class="text-container">
+        <p>Welcome to the store</p>
+        <p>Please select the products youw ant and add them to shopping cart</p>
+        <p>When you are done click the shopping cart icon to review the order and check out</p>
+        <form method="get" action="/search" style="margin-bottom: 5px;">
+            <label for="q">Search: </label>
+            <input type="text" name="q">
+        </form>
+    </div>
+    <div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr class="tableBlock">
+                    <td colspan="4">
+                        <div class="cartInfoTable">
+                            <a href="/cart"><img src="/images/cart.png" /></a> <span class="cartCount"><%=locals.cartCount%></span><span> items</span><span> Rs.</span><span class="cartPrice"><%=locals.cartPrice%></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr class="tableBlock">
+                    <td colspan="4">
+                        <div class="cartInfoTable">
+                            <a href="/cart"><img src="/images/cart.png" /></a> <span class="cartCount"><%=locals.cartCount%></span><span> items</span><span> Rs.</span><span class="cartPrice"><%=locals.cartPrice%></span>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+                <tbody>
+                <% if (products.length > 0) {%>
+                    <% for(var i = 0; i < products.length; i++) { %>
+                        <tr>
+                            <td><img src="/images/<%= products[i].icon %>"/></td>
+                            <td><a href="/pdp/<%= products[i].id %>"><%=products[i].heading%></a><p><%= products[i].title %></p></td>
+                            <td>Rs. <%= products[i].price %></td>
+                            <td><a id="addToCart" data-id="<%= products[i].id%>" href="/cart">Add to Cart</a></td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
+                    <tr >
+                        <td colspan="4">
+                            <p>No Products Found</p>
+                        </td>
+                    </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+</body>
+</html>
+
+</section>
+<footer>
+    <% include ./partials/footer %>
+</footer>
+
+
+</body>
+</html>

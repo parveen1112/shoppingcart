@@ -1,0 +1,35 @@
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="header">
+            Shopping Cart
+        </div>
+    </div>
+</nav>
+
+<script type="application/javascript">
+    $(document).ready(function(){
+        $(document).on('click', '#addToCart', function(){
+            var url = $(this).attr('href') || $(this).attr('data-href'), id = $(this).attr('data-id');
+            $.ajax({
+                url : url,
+                method : 'post',
+                data : {
+                    id : id
+                },
+                success : function(res){
+                    if (res.success && res.data){
+                        if (res.data[id]){
+                            $(".itemAlreadyExist").show();
+                            $('#removeFromCart').prop('disabled', false);
+                        }
+
+                        $('.cartCount').html(res.data.total || 0);
+                        $('.cartPrice').html(res.data.total_price || 0);
+                    }
+                }
+            })
+            event.preventDefault();
+        });
+    });
+</script>
+
