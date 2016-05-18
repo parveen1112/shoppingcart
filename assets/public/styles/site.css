@@ -1,0 +1,70 @@
+body{
+    font-family:'Open Sans Light',Helvetica,Arial,sans-serif;
+    margin: 0px;
+}
+.main-header {
+    text-transform: uppercase;
+    padding: 6px 15px 0;
+    margin: 0 auto;
+    position: relative;
+    height: 80px;
+    color: #747F8B;
+    background: #fff;
+    font-weight: bold;
+}
+footer{
+    width: 100%;
+    height: 100px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background: #fff;
+    color: #747F8B;
+    text-shadow: 1px 1px 0 rgba(155,155,155,0.6);
+}
+
+.middle-container {
+    min-height: 600px;
+}
+
+.header {
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(155,155,155,.6);
+    font-size: x-large;
+}
+
+#inputForm {
+    padding: 10px 10px 10px 10px;
+}
+
+#inputForm input {
+    margin-top: 10px;
+}
+.pdpButtons {
+    width: 28%;
+    float: right;
+    margin-top: 14%;
+}
+
+.table-responsive.pdpDescription {
+    width: 70%;
+    float: left;
+}
+.table-responsive img {
+    width: 20px;
+}
+.text-container > p {
+    color: #0000FF;
+}
+.heading {
+    font-weight: bold;
+}
+
+.tableBlock {
+    background-color: #ddd;
+}
+
+.tableBlock .cartInfoTable {
+    float: right;
+}

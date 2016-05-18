@@ -1,0 +1,14 @@
+<div class="input-group" style="width: 20%;">
+  <span class="input-group-btn">
+      <button type="button" class="btn btn-danger btn-number minus" data-type="minus" data-field="<%= data.id %>">
+          <span class="glyphicon glyphicon-minus"></span>
+      </button>
+  </span>
+    <input type="text" name="<%= data.id%>" class="form-control input-number" value="<%=data.quantity%>" min="1">
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="<%= data.id %>">
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+  </span>
+</div>
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./partials/head %>
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $(document).on('click', '#removeFromCart', function(){
+                var url = $(this).attr('href') || $(this).attr('data-href'),
+                        id = $(this).attr('data-id'), _this = this;
+                $.ajax({
+                    url : url + "/" + id,
+                    method : 'delete',
+                    success : function(res){
+                        if (res.success && res.data){
+                            if (!res.data[id]) {
+                                $(".itemAlreadyExist").hide();
+                                $(_this).prop('disabled', true);
+                            }
+                            $('.cartCount').html(res.data.total || 0);
+                            $('.cartPrice').html(res.data.total_price || 0);
+
+                        }
+                    }
+                })
+            });
+
+            <% if (!locals.inCart) {%> $(".itemAlreadyExist").hide(); $('#removeFromCart').prop('disabled', true); <%}%>
+
+        });
+    </script>
+</head>
+<body class="container">
+
+<header class="main-header">
+    <% include ./partials/header %>
+</header>
+<section class="container middle-container">
+    <div class="text-container">
+        <p><img style="width: 20px;" src="/images/<%= locals.product.icon%>"> <%=locals.product.heading%> <%=locals.product.title%></p>
+    </div>
+    <div class="table-responsive pdpDescription">
+        <table class="table">
+            <thead>
+            <tr class="tableBlock">
+                <td colspan="3">
+                    <div class="cartInfoTable">
+                        <a href="/cart"><img src="/images/cart.png" /></a> <span class="cartCount"><%=locals.cartCount%></span><span> items</span><span> Rs.</span><span class="cartPrice"><%=locals.cartPrice%></span>
+                    </div>
+                    <p class="itemAlreadyExist">This item is already in cart</p>
+                </td>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr class="tableBlock">
+                <td colspan="3">
+                    <div class="cartInfoTable">
+                        <a href="/cart"><img src="/images/cart.png" /></a> <span class="cartCount"><%=locals.cartCount%></span><span> items</span><span> Rs.</span><span class="cartPrice"><%=locals.cartPrice%></span>
+                    </div>
+                    <p class="itemAlreadyExist">This item is already in cart</p>
+                </td>
+            </tr>
+            </tfoot>
+
+            <tbody>
+            <% for(var i = 0; i < product.description.length; i++) { %>
+            <tr>
+                <td class="heading"><%= product.description[i].heading %></td>
+                <% if (product.description[i].representation && product.description[i].representation.type === 'star') {%>
+                    <td><%= product.description[i].representation.value  %></td>
+                <% } else { %>
+                    <td><h1><%= product.description[i].representation.value %></h1></td>
+                <% } %>
+                <td><span class="heading"><%= product.description[i].quantity %></span><p><%= product.description[i].text %></p></td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="pdpButtons">
+        <button type="button" id="addToCart" data-href="/cart" data-id="<%= product.id %>" class="btn btn-success btn-block">Add to Cart</button>
+        <button type="button" id="removeFromCart" data-href="/cart" data-id="<%= product.id %>" class="btn btn-danger btn-block">Remove from Cart</button>
+        <button type="button" class="btn btn-default btn-block" onclick="window.location.href = '/'">Back to Store</button>
+    </div>
+</section>
+</body>
+</html>
+<footer>
+    <% include ./partials/footer %>
+</footer>
+
+
+</body>
+</html>

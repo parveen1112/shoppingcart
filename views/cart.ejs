@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./partials/head %>
+</head>
+<body class="container">
+
+<header class="main-header">
+    <% include ./partials/header %>
+</header>
+<section class="container middle-container">
+    <div class="text-container">
+        <p>Thanks for shopping here</p>
+        <p>This is your shopping cart. Here, you can edit the items, go back to the store, clear the cart or checkout</p>
+
+        <div class="table-responsive pdpDescription">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for(var i = 0; i < products.length; i++) { %>
+                <tr>
+                    <td><%=products[i].item%></td>
+                    <td><% var data = products[i] %><% include ./partials/quantity-spinner %></td>
+                    <td><span class="<%= products[i].id%>price"><%= products[i].price %></span></td>
+                    <td><a class="removeItem" href="/cart/remove/<%= products[i].id %>">Remove</a></td>
+                </tr>
+                <% } %>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td><span class="cartCount"><%=locals.cartCount%></span></td>
+                        <td><span class="cartPrice"><%=locals.cartPrice%></span></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <div class="pdpButtons" style="margin-top: 0">
+            <div style="margin-bottom: 30px">
+                <button type="button" class="btn btn-default btn-block" onclick="window.location.href = '/'">Back to Store</button>
+                <button type="button" id="removeFromCart" onclick="window.location.href = '/cart/clear'" class="btn btn-danger btn-block">Clear Cart</button>
+            </div>
+            <div>
+                <button type="button"  class="btn btn-primary btn-block">Check out with paypal</button>
+                <button type="button"  class="btn btn-primary btn-block">Check out with Google</button>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+</body>
+</html>
+<footer>
+    <% include ./partials/footer %>
+</footer>
+
+<script type="application/javascript">
+    $(document).ready(function(){
+        $('.btn-number').click(function(e){
+            e.preventDefault();
+
+            var fieldName = $(this).attr('data-field'),
+                type = $(this).attr('data-type'),
+                input = $("input[name='"+fieldName+"']"),
+                currentVal = parseInt(input.val()),
+                _this = this;
+            if (!isNaN(currentVal)) {
+                if(type == 'minus') {
+
+                    if(currentVal > input.attr('min')) {
+                        $.ajax({
+                            url : '/cart/' + fieldName,
+                            method : 'delete',
+                            success: function(res) {
+                                if (res.success && res.data){
+                                    var price = res.data[fieldName]['pricePerUnit'] * res.data[fieldName]['count'];
+                                    $("." + fieldName + "price").html(price)
+                                    $(".cartCount").html(res.data.total);
+                                    $(".cartPrice").html(res.data.total_price);
+                                    input.val(currentVal - 1).change();
+                                    if(parseInt(input.val()) == input.attr('min')) {
+                                        $(_this).attr('disabled', true);
+                                    }
+                                }
+                            }
+                        })
+                    }
+
+                } else if(type == 'plus') {
+                    $.ajax({
+                        url : '/cart',
+                        method : 'post',
+                        data : {
+                            id : fieldName
+                        },
+                        success: function(res) {
+                            if (res.success && res.data){
+                                var price = res.data[fieldName]['pricePerUnit'] * res.data[fieldName]['count'];
+                                $("." + fieldName + "price").html(price);
+                                $(".cartCount").html(res.data.total);
+                                $(".cartPrice").html(res.data.total_price);
+                                input.val(currentVal + 1).change();
+                                if(parseInt(input.val()) > input.attr('min')) {
+                                    $(_this).parent().siblings().find(".minus").attr('disabled', false);
+                                }
+                            }
+                        }
+                    })
+                }
+            } else {
+                input.val(0);
+            }
+        });
+    })
+</script>
+
+</body>
+</html>
